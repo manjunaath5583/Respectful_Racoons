@@ -34,3 +34,11 @@ repos:
         language: system
         types: [python]
         require_serial: true
+      - id: black
+        name: Black
+        # entry: python -m black .  # Default Env setup
+        # entry: pipenv run python -m black .  # Pipenv setup
+        entry: poetry run python -m black .  # Poetry setup
+        language: system
+        types: [python]
+        require_serial: true
