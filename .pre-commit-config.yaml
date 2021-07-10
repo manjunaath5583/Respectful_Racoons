@@ -42,3 +42,11 @@ repos:
         language: system
         types: [python]
         require_serial: true
+      - id: mypy
+        name: MyPY
+        # entry: python -m mypy --config-file=tox.ini .  # Default Env setup
+        # entry: pipenv run python -m mypy --config-file=tox.ini .  # Pipenv setup
+        entry: poetry run mypy --config-file=tox.ini .  # Poetry setup
+        language: system
+        types: [python]
+        require_serial: true
