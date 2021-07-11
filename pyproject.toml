@@ -8,6 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 black = "^21.6b0"
+rich = "^10.5.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
