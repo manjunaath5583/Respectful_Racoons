@@ -89,6 +89,8 @@ class ModuleMeta:
 class Module:
     """All modules should inherit this class. Should be used with the ``module`` decorator"""
 
+    meta: ModuleMeta
+
     def display(
         self,
     ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
