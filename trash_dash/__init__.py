@@ -1,4 +1,6 @@
-from blessed import Terminal
+from typing import Optional
+
+from blessed import Terminal, keyboard
 from rich import print
 from rich.align import Align
 from rich.columns import Columns
@@ -25,7 +27,7 @@ def run():
     try:
         with term.fullscreen(), term.cbreak():
             with Live(screen.layout, screen=True):
-                pressed_key = ""
+                pressed_key: Optional[keyboard.Keystroke] = None
                 while pressed_key != "q":
                     pressed_key = term.inkey()
         print("[b]Exiting!")
