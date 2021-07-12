@@ -1,3 +1,7 @@
+from typing import Optional
+
+from blessed import Terminal, keyboard
+from rich import print
 from rich.align import Align
 from rich.columns import Columns
 from rich.live import Live
@@ -15,12 +19,17 @@ screen = Screen(
     ),
 )
 
+term = Terminal()
+
 
 def run():
     """Run the app"""
     try:
-        with Live(screen.layout, screen=True):
-            while True:
-                pass
+        with term.fullscreen(), term.cbreak():
+            with Live(screen.layout, screen=True):
+                pressed_key: Optional[keyboard.Keystroke] = None
+                while pressed_key != "q":
+                    pressed_key = term.inkey()
+        print("[b]Exiting!")
     except KeyboardInterrupt:
         pass
