@@ -1,3 +1,4 @@
+from blessed import Terminal
 from rich.align import Align
 from rich.columns import Columns
 from rich.live import Live
@@ -15,12 +16,15 @@ screen = Screen(
     ),
 )
 
+term = Terminal()
+
 
 def run():
     """Run the app"""
     try:
-        with Live(screen.layout, screen=True):
-            while True:
-                pass
+        with term.fullscreen(), term.cbreak():
+            with Live(screen.layout, screen=True):
+                while True:
+                    pass
     except KeyboardInterrupt:
         pass
