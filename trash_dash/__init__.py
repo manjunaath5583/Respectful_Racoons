@@ -1,4 +1,5 @@
 from blessed import Terminal
+from rich import print
 from rich.align import Align
 from rich.columns import Columns
 from rich.live import Live
@@ -24,7 +25,9 @@ def run():
     try:
         with term.fullscreen(), term.cbreak():
             with Live(screen.layout, screen=True):
-                while True:
-                    pass
+                pressed_key = ""
+                while pressed_key != "q":
+                    pressed_key = term.inkey()
+        print("[b]Exiting!")
     except KeyboardInterrupt:
         pass
