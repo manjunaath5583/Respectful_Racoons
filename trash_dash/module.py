@@ -37,6 +37,7 @@ def module(
             if obj.meta.allow_card:
                 assert hasattr(obj, "card")
             assert hasattr(obj, "display")
+            assert hasattr(obj, "header")
 
             return obj
 
@@ -90,6 +91,18 @@ class Module:
     """All modules should inherit this class. Should be used with the ``module`` decorator"""
 
     meta: ModuleMeta
+
+    def header(
+        self,
+    ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
+        """
+        This method is called when the module's header should be displayed, when the module is being displayed.
+
+        :return: It should return a tuple, in which the first item is the Rich renderable, and
+        the second item, is optionally a function that'll be called when the module will
+        be destroyed.
+        """
+        pass
 
     def display(
         self,
