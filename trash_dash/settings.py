@@ -15,7 +15,7 @@ default_settings = {
 }
 
 
-def _get_settings() -> dict:
+def get_settings() -> dict:
     """Gets settings from settings.toml, or creates it if it doesn't exist, or is invalid"""
     if not os.path.exists(PATH):
         with open(PATH, "w") as f:
@@ -30,7 +30,8 @@ def _get_settings() -> dict:
     return {}
 
 
-def _write_settings(data: dict) -> dict:
+def write_settings(data: dict) -> dict:
+    """Writes the settings to file"""
     with open(PATH, "w") as f:
         toml.dump(data, f)
     return data
@@ -54,7 +55,7 @@ class _Settings:
 
     def get(self, key: str) -> Any:
         """Gets a setting"""
-        settings = _get_settings()
+        settings = get_settings()
         if (
             type(settings.get("module")) != dict
             or type(settings.get("module").get(self.name)) != dict
@@ -64,22 +65,22 @@ class _Settings:
 
     def set(self, key: str, value: Any) -> Any:
         """Gets a setting"""
-        settings = _get_settings()
+        settings = get_settings()
         if (
             type(settings.get("module")) != dict
             or type(settings.get("module").get(self.name)) != dict
         ):
             raise Exception("Setting not registered")
         settings[self.name][key] = value
-        _write_settings(settings)
+        write_settings(settings)
 
 
 def register(name: str):
     """Register a module in settings"""
-    settings = _get_settings()
+    settings = get_settings()
     if type(settings.get("module")) != dict:
         settings["module"] = {}
     if type(settings.get("module").get(name)) != dict:
         settings["module"][name] = {"name": name}
-    _write_settings(settings)
+    write_settings(settings)
     return _Settings(name)
