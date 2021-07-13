@@ -7,20 +7,26 @@ import toml
 PATH = os.path.abspath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/settings.toml")
 )
+default_settings = {
+    "show_today": True,
+    "app_name": "TrashDash",
+    "cards": {},
+    "modules": {},
+}
 
 
 def _get_settings() -> dict:
     """Gets settings from settings.toml, or creates it if it doesn't exist, or is invalid"""
     if not os.path.exists(PATH):
         with open(PATH, "w") as f:
-            f.write("# Settings")
+            toml.dump(default_settings, f)
     # Try reading TOML and see if it is valid
     try:
         with open(PATH, "r") as f:
             return toml.load(f)
     except toml.TomlDecodeError:
         with open(PATH, "w") as f:
-            f.write("# Settings")
+            toml.dump(default_settings, f)
     return {}
 
 
