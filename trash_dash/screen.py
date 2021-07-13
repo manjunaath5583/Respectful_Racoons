@@ -5,7 +5,7 @@ from typing import Optional
 from rich.console import RenderableType
 from rich.layout import Layout
 
-layouts = {}
+screens = {}
 
 
 class Screen:
@@ -28,10 +28,10 @@ class Screen:
         :param body_renderable: Renderable to be put in the body layout
         """
         self.name = name
-        layouts[name] = self
+        screens[name] = self
 
         self.layout = Layout(name=name)
-        self.header_layout = Layout(header_renderable, name="header", size=2)
+        self.header_layout = Layout(header_renderable, name="header", size=3)
         self.body_layout = Layout(
             body_renderable, name="body", ratio=2, minimum_size=25
         )

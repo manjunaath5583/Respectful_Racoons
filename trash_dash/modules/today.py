@@ -19,7 +19,7 @@ class TodayModule(Module):
     def _get_today() -> List[dict]:
         """Generator to get the Today items from each module"""
         to_return = []
-        for name, module in modules.items():
+        for module in modules.values():
             try:
                 if module.meta.allow_today:
                     today = module.today()
@@ -30,7 +30,7 @@ class TodayModule(Module):
                     if today:
                         to_return.append(
                             {
-                                "name": name,
+                                "name": module.meta.display_name,
                                 "renderable": today[0],
                                 "destroy_func": destroy_func,
                             }
@@ -45,7 +45,7 @@ class TodayModule(Module):
         today = TodayModule._get_today()
         items = []
         for i in today:
-            items.append(Padding(f"[b u]{escape(i.get('name'))}", (0, 1)))
+            items.append(Padding(f"[b u]{escape(i.get('name', 'Module'))}", (0, 1)))
             items.append(Padding(i.get("renderable"), (0, 4)))
 
         def destroy():
