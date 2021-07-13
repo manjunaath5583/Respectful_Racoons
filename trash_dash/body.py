@@ -2,6 +2,7 @@
 from collections.abc import Callable
 from typing import Tuple
 
+from rich.align import Align
 from rich.columns import Columns
 from rich.console import RenderableType, RenderGroup
 from rich.padding import Padding
@@ -28,16 +29,19 @@ def body() -> Tuple[RenderableType, Callable]:
         destroy_three()
 
     return (
-        Padding(
-            Columns(
-                [
-                    today,
-                    RenderGroup(date_time_section(), Padding(one, (2, 0))),
-                    RenderGroup(two, Padding(three, (2, 0))),
-                ],
-                expand=True,
+        RenderGroup(
+            Align("Press [b]a[/b] to view all modules", "center"),
+            Padding(
+                Columns(
+                    [
+                        today,
+                        RenderGroup(date_time_section(), Padding(one, (2, 0))),
+                        RenderGroup(two, Padding(three, (2, 0))),
+                    ],
+                    expand=True,
+                ),
+                (1, 3),
             ),
-            (1, 3),
         ),
         destroy,
     )
