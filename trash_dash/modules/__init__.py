@@ -1,5 +1,5 @@
 """Contains a repository of modules"""
-from typing import Dict
+from typing import Any, Dict
 
 # Type: module_name: module_class
-modules: Dict[str, type] = {}
+modules: Dict[str, Any] = {}

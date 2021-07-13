@@ -23,7 +23,7 @@ def get_settings() -> dict:
     # Try reading TOML and see if it is valid
     try:
         with open(PATH, "r") as f:
-            return toml.load(f)
+            return dict(toml.load(f))
     except toml.TomlDecodeError:
         with open(PATH, "w") as f:
             toml.dump(default_settings, f)
@@ -58,7 +58,7 @@ class _Settings:
         settings = get_settings()
         if (
             type(settings.get("module")) != dict
-            or type(settings.get("module").get(self.name)) != dict
+            or type(settings.get("module").get(self.name)) != dict  # type: ignore
         ):
             raise Exception("Setting not registered")
         return settings[self.name].get(key)
@@ -68,7 +68,7 @@ class _Settings:
         settings = get_settings()
         if (
             type(settings.get("module")) != dict
-            or type(settings.get("module").get(self.name)) != dict
+            or type(settings.get("module").get(self.name)) != dict  # type: ignore
         ):
             raise Exception("Setting not registered")
         settings[self.name][key] = value
@@ -80,7 +80,7 @@ def register(name: str):
     settings = get_settings()
     if type(settings.get("module")) != dict:
         settings["module"] = {}
-    if type(settings.get("module").get(name)) != dict:
+    if type(settings.get("module").get(name)) != dict:  # type: ignore
         settings["module"][name] = {"name": name}
     write_settings(settings)
     return _Settings(name)

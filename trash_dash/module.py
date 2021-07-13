@@ -1,6 +1,6 @@
 """This file contains the API required to create Modules"""
 from collections.abc import Callable
-from typing import Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 
 from rich.console import RenderableType
 
@@ -8,7 +8,7 @@ from trash_dash.settings import _Settings, register
 
 
 def register_module(
-    module: Union[type, Callable],
+    module: Any,
     name: str,
     display_name: str,
     description: Optional[str] = None,
