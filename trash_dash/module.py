@@ -80,9 +80,10 @@ class Module:
 
     meta: ModuleMeta
 
-    def header(
-        self,
-    ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
+    @staticmethod
+    def header() -> Optional[
+        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
+    ]:
         """
         This method is called when the module's header should be displayed, when the module is being displayed.
 
@@ -92,9 +93,10 @@ class Module:
         """
         pass
 
-    def display(
-        self,
-    ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
+    @staticmethod
+    def display() -> Optional[
+        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
+    ]:
         """
         This method is called when the module must be displayed in its own screen.
 
@@ -104,9 +106,10 @@ class Module:
         """
         pass
 
-    def today(
-        self,
-    ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
+    @staticmethod
+    def today() -> Optional[
+        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
+    ]:
         """
         This method is called when the module must be displayed in the Today card.
 
@@ -118,9 +121,10 @@ class Module:
         """
         pass
 
-    def card(
-        self,
-    ) -> Optional[Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]]:
+    @staticmethod
+    def card() -> Optional[
+        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
+    ]:
         """
         This method is called when the module must be displayed as a card on the main page.
 
