@@ -4,6 +4,7 @@ from blessed import Terminal, keyboard
 from rich import print
 from rich.align import Align
 from rich.columns import Columns
+from rich.console import RenderGroup
 from rich.live import Live
 from rich.padding import Padding
 
@@ -16,18 +17,23 @@ body_renderable, body_destroy = body()
 screen = Screen(
     "main",
     header_renderable=Padding(
-        Columns(
-            [
-                Align(
-                    f"[bold u]{app_settings.get('app_name', 'TrashDash')}[/]",
-                    align="left",
-                    vertical="middle",
-                ),
-                Align("[bold]Settings    Exit(q)[/]", align="right", vertical="middle"),
-            ],
-            expand=True,
+        RenderGroup(
+            Columns(
+                [
+                    Align(
+                        f"[bold u]{app_settings.get('app_name', 'TrashDash')}[/]",
+                        align="left",
+                        vertical="middle",
+                    ),
+                    Align(
+                        "[bold]Settings    Exit(q)[/]", align="right", vertical="middle"
+                    ),
+                ],
+                expand=True,
+            ),
+            Align("Use the [yellow]keyboard[/] to navigate!", align="center"),
         ),
-        (1, 3),
+        (1, 3, 0, 3),
     ),
     body_renderable=body_renderable,
 )
