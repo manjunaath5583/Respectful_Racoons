@@ -19,7 +19,7 @@ screen = Screen(
                 align="left",
                 vertical="middle",
             ),
-            Align("[bold]Settings[/]", align="right", vertical="middle"),
+            Align("[bold]Settings    Exit(q)[/]", align="right", vertical="middle"),
         ],
         expand=True,
     ),
