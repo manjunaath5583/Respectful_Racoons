@@ -10,7 +10,7 @@ PATH = os.path.abspath(
 default_settings = {
     "show_today": True,
     "app_name": "TrashDash",
-    "cards": {},
+    "cards": [],
     "modules": {},
 }
 
