@@ -5,6 +5,7 @@ from rich import print
 from rich.align import Align
 from rich.columns import Columns
 from rich.live import Live
+from rich.padding import Padding
 
 from trash_dash.screen import Screen
 from trash_dash.settings import get_settings
@@ -12,16 +13,19 @@ from trash_dash.settings import get_settings
 app_settings = get_settings()
 screen = Screen(
     "main",
-    header_renderable=Columns(
-        [
-            Align(
-                f"[bold u]{app_settings.get('app_name', 'TrashDash')}[/]",
-                align="left",
-                vertical="middle",
-            ),
-            Align("[bold]Settings    Exit(q)[/]", align="right", vertical="middle"),
-        ],
-        expand=True,
+    header_renderable=Padding(
+        Columns(
+            [
+                Align(
+                    f"[bold u]{app_settings.get('app_name', 'TrashDash')}[/]",
+                    align="left",
+                    vertical="middle",
+                ),
+                Align("[bold]Settings    Exit(q)[/]", align="right", vertical="middle"),
+            ],
+            expand=True,
+        ),
+        (1, 3),
     ),
 )
 
