@@ -6,6 +6,7 @@ from rich.columns import Columns
 from rich.console import RenderableType
 from rich.padding import Padding
 
+from trash_dash.date_time_section import date_time_section
 from trash_dash.modules.today import TodayModule
 
 
@@ -19,4 +20,4 @@ def body() -> Tuple[RenderableType, Callable]:
             if hasattr(i, "__call__"):
                 i()
 
-    return Padding(Columns([today], expand=True), (1, 3)), destroy
+    return Padding(Columns([today, date_time_section()], expand=True), (1, 3)), destroy
