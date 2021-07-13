@@ -32,7 +32,7 @@ def body() -> Tuple[RenderableType, Callable]:
             Columns(
                 [
                     today,
-                    RenderGroup(date_time_section(), Padding(one, (1, 0))),
+                    RenderGroup(date_time_section(), Padding(one, (2, 0))),
                     RenderGroup(two, Padding(three, (2, 0))),
                 ],
                 expand=True,
