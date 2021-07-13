@@ -21,9 +21,9 @@ def _show_more(card_index: int) -> Optional[Tuple[RenderableType, Callable]]:
         card_item = modules.get(_cards[card_index])
     except IndexError:
         return None
-    if not (hasattr(card_item, "display") and bool(card_item.display)):
+    if not (hasattr(card_item, "display") and bool(card_item.display)):  # type: ignore
         return None
-    x = card_item.display()
+    x = card_item.display()  # type: ignore
     try:
         if not x[0]:
             return None
