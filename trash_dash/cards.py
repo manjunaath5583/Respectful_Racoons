@@ -3,7 +3,8 @@ from collections.abc import Callable
 from typing import Tuple
 
 from rich.align import Align
-from rich.console import RenderableType
+from rich.console import RenderableType, RenderGroup
+from rich.panel import Panel
 
 from trash_dash.modules import modules
 from trash_dash.settings import get_settings
@@ -13,9 +14,10 @@ cards = get_settings().get("cards", [])
 
 def _render_card(card_index: int) -> Tuple[RenderableType, Callable]:
     try:
-        card_item = modules.get(cards[card_index])
+        name = cards[card_index]
     except IndexError:
-        card_item = None
+        return Align("[b]No card here!", "center", vertical="middle"), lambda: None
+    card_item = modules.get(name)
     if not card_item:
         return Align("[b]No card here!", "center", vertical="middle"), lambda: None
     c = card_item.card()
@@ -25,7 +27,13 @@ def _render_card(card_index: int) -> Tuple[RenderableType, Callable]:
         destroy = c[1]
     except IndexError:
         destroy = lambda: None  # noqa: E731
-    return c[0], destroy
+    return (
+        Panel(
+            RenderGroup(c[0], f"[i]Press [b]{card_index + 1}[/b] to view"),
+            title=card_item.meta.display_name,
+        ),
+        destroy,
+    )
 
 
 def one():
