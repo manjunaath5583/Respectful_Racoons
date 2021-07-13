@@ -7,13 +7,19 @@ from rich.columns import Columns
 from rich.live import Live
 
 from trash_dash.screen import Screen
+from trash_dash.settings import get_settings
 
+app_settings = get_settings()
 screen = Screen(
     "main",
     header_renderable=Columns(
         [
-            Align("[bold u]TrashDash[/]", align="left", vertical="middle"),
-            Align("[bold]Settings[/]", align="right", vertical="middle"),
+            Align(
+                f"[bold u]{app_settings.get('app_name', 'TrashDash')}[/]",
+                align="left",
+                vertical="middle",
+            ),
+            Align("[bold]Settings    Exit(q)[/]", align="right", vertical="middle"),
         ],
         expand=True,
     ),
