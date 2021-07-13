@@ -1,12 +1,12 @@
 """This file contains the API required to create Modules"""
 from collections.abc import Callable
-from functools import wraps
 from typing import Optional, Tuple, Union
 
 from rich.console import RenderableType
 
 
-def module(
+def register_module(
+    module: Union[type, Callable],
     name: str,
     display_name: str,
     description: Optional[str] = None,
@@ -14,36 +14,24 @@ def module(
     allow_card: bool = False,
 ):
     """
-    Decorator to create a module. Should be used along with inheriting the ``Module`` class.
+    Method to create a module. Should be used along with inheriting the ``Module`` class.
 
+    :param module: The module to register
     :param name: The internal name of the module. Name it like you name variables. It'll be used in JSON
     :param display_name: The display name of the module. Shown to users
     :param description: The module's description.
     :param allow_today: Allow this module to appear in the Today card
     :param allow_card: Allow this module to appear in the main screen (when the user wants it to)
     """
+    assert issubclass(module, Module)
 
-    def decorate(cls: Callable):
-        @wraps(cls)
-        def wrapper(*args, **kwargs):
-            obj = cls(*args, **kwargs)
-            assert isinstance(obj, Module)
-
-            obj.meta = ModuleMeta(
-                name, display_name, description, allow_today, allow_card
-            )
-            if obj.meta.allow_today:
-                assert hasattr(obj, "today")
-            if obj.meta.allow_card:
-                assert hasattr(obj, "card")
-            assert hasattr(obj, "display")
-            assert hasattr(obj, "header")
-
-            return obj
-
-        return wrapper
-
-    return decorate
+    module.meta = ModuleMeta(name, display_name, description, allow_today, allow_card)
+    if module.meta.allow_today:
+        assert hasattr(module, "today")
+    if module.meta.allow_card:
+        assert hasattr(module, "card")
+    assert hasattr(module, "display")
+    assert hasattr(module, "header")
 
 
 class ModuleMeta:
@@ -88,7 +76,7 @@ class ModuleMeta:
 
 
 class Module:
-    """All modules should inherit this class. Should be used with the ``module`` decorator"""
+    """All modules should inherit this class. Should be used with the ``register_module`` function"""
 
     meta: ModuleMeta
 
