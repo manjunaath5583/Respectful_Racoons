@@ -4,6 +4,8 @@ from typing import Optional, Tuple, Union
 
 from rich.console import RenderableType
 
+from trash_dash.settings import _Settings, register
+
 
 def register_module(
     module: Union[type, Callable],
@@ -32,6 +34,8 @@ def register_module(
         assert hasattr(module, "card")
     assert hasattr(module, "display")
     assert hasattr(module, "header")
+
+    module.settings = register(name)
 
 
 class ModuleMeta:
@@ -79,6 +83,7 @@ class Module:
     """All modules should inherit this class. Should be used with the ``register_module`` function"""
 
     meta: ModuleMeta
+    settings: _Settings
 
     @staticmethod
     def header() -> Optional[
