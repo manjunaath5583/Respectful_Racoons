@@ -31,7 +31,7 @@ class Screen:
         layouts[name] = self
 
         self.layout = Layout(name=name)
-        self.header_layout = Layout(header_renderable, name="header", size=2)
+        self.header_layout = Layout(header_renderable, name="header", size=3)
         self.body_layout = Layout(
             body_renderable, name="body", ratio=2, minimum_size=25
         )
