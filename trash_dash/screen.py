@@ -1,6 +1,6 @@
 """Custom layout class"""
 
-from typing import Optional
+from typing import Dict, Optional
 
 from blessed.keyboard import Keystroke
 from rich.console import RenderableType
@@ -8,7 +8,7 @@ from rich.layout import Layout
 
 from trash_dash.events import emit
 
-screens = {}
+screens: Dict[str, "Screen"] = {}
 
 
 class Screen:
