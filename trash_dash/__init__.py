@@ -6,6 +6,7 @@ from rich.align import Align
 from rich.live import Live
 from rich.markup import escape
 
+from trash_dash.all_modules import all_modules
 from trash_dash.cards import cards as _cards
 from trash_dash.main_screen import create_screen
 from trash_dash.modules import modules
@@ -73,6 +74,11 @@ def run():
                             live.update(mod.layout)
                             current_screen.destroy()
                             current_screen = mod
+                    elif pressed_key == "a":
+                        x = all_modules()
+                        live.update(x.layout)
+                        current_screen.destroy()
+                        current_screen = x
                     else:
                         # Pass the keypress to the screen
                         current_screen.keystroke(pressed_key)
