@@ -19,9 +19,9 @@ def _render_card(card_index: int) -> Tuple[RenderableType, Callable]:
     except IndexError:
         return Align("[b]No card here!", "center", vertical="middle"), lambda: None
     card_item = modules.get(name)
-    if not card_item.meta.allow_card:
-        return Align("[b]No card here!", "center", vertical="middle"), lambda: None
     if not card_item:
+        return Align("[b]No card here!", "center", vertical="middle"), lambda: None
+    if not card_item.meta.allow_card:
         return Align("[b]No card here!", "center", vertical="middle"), lambda: None
     c = card_item.card()
     if not c:
