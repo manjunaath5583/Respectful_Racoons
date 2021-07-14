@@ -3,10 +3,8 @@ from typing import Optional, Tuple
 
 from blessed import Terminal, keyboard
 from rich import print
-from rich.align import Align
-from rich.console import RenderableType, RenderGroup
+from rich.console import RenderableType
 from rich.live import Live
-from rich.panel import Panel
 
 from trash_dash.cards import cards as _cards
 from trash_dash.main_screen import create_screen
@@ -52,26 +50,9 @@ def run():
                         live.update(x.layout)
                         current_destroy()
                         current_destroy = y
-                    elif pressed_key in ["1", "2", "3"]:
-                        # Render the corresponding card
-                        card_index = int(pressed_key) - 1
-                        card = _show_more(card_index)
-                        if not card:
-                            live.update(
-                                Panel(
-                                    Align(
-                                        RenderGroup(
-                                            "[b]That module doesn't support being displayed on its own.",
-                                            "Press ESC to go back to the main screen",
-                                        ),
-                                        vertical="middle",
-                                    )
-                                )
-                            )
-                        else:
-                            live.update(card[0])
-                            current_destroy()
-                            current_destroy = card[1]
+                    else:
+                        # Pass the keypress to the screen
+                        screens["main"].keystroke_handler(pressed_key)
         current_destroy()
         print("[b]Exiting!")
     except KeyboardInterrupt:
