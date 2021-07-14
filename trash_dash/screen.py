@@ -5,7 +5,6 @@ from typing import Dict, Optional
 from blessed.keyboard import Keystroke
 from rich.console import RenderableType
 from rich.layout import Layout
-from rich.live import Live
 
 from trash_dash.events import emit
 
@@ -61,6 +60,6 @@ class Screen:
         """Handles key strokes"""
         emit(f"{self.name}.keystroke", key)
 
-    def destroy(self, live: Live):
+    def destroy(self):
         """Handles destroy"""
-        emit(f"{self.name}.destroy", live)
+        emit(f"{self.name}.destroy")
