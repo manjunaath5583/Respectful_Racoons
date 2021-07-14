@@ -1,11 +1,14 @@
 """Custom layout class"""
 
-from typing import Optional
+from typing import Dict, Optional
 
+from blessed.keyboard import Keystroke
 from rich.console import RenderableType
 from rich.layout import Layout
 
-screens = {}
+from trash_dash.events import emit
+
+screens: Dict[str, "Screen"] = {}
 
 
 class Screen:
@@ -44,3 +47,19 @@ class Screen:
         :param item: The renderable to update the header
         """
         self.header_layout.update(item)
+
+    def render_body(self, item: RenderableType):
+        """
+        Updates the header layout with the ``item`` renderable
+
+        :param item: The renderable to update the header
+        """
+        self.body_layout.update(item)
+
+    def keystroke(self, key: Keystroke):
+        """Handles key strokes"""
+        emit(f"{self.name}.keystroke", key)
+
+    def destroy(self):
+        """Handles destroy"""
+        emit(f"{self.name}.destroy")

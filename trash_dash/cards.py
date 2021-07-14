@@ -6,6 +6,7 @@ from rich.align import Align
 from rich.console import RenderableType, RenderGroup
 from rich.panel import Panel
 
+from trash_dash.events import emit
 from trash_dash.modules import modules
 from trash_dash.settings import get_settings
 
@@ -20,16 +21,18 @@ def _render_card(card_index: int) -> Tuple[RenderableType, Callable]:
     card_item = modules.get(name)
     if not card_item:
         return Align("[b]No card here!", "center", vertical="middle"), lambda: None
-    c = card_item.card()
-    if not c or not c[0]:
+    if not card_item.meta.allow_card:
         return Align("[b]No card here!", "center", vertical="middle"), lambda: None
-    try:
-        destroy = c[1]
-    except IndexError:
-        destroy = lambda: None  # noqa: E731
+    c = card_item.card()
+    if not c:
+        return Align("[b]No card here!", "center", vertical="middle"), lambda: None
+
+    def destroy():
+        emit(f"{card_item.meta.name}.destroy")
+
     return (
         Panel(
-            RenderGroup(c[0], f"[i]Press [b]{card_index + 1}[/b] to view"),
+            RenderGroup(c, f"[i]Press [b]{card_index + 1}[/b] to view"),
             title=card_item.meta.display_name,
         ),
         destroy,

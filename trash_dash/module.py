@@ -1,6 +1,5 @@
 """This file contains the API required to create Modules"""
-from collections.abc import Callable
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional
 
 from rich.console import RenderableType
 
@@ -86,9 +85,7 @@ class Module:
     settings: _Settings
 
     @staticmethod
-    def header() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def header() -> Optional[RenderableType]:
         """
         This method is called when the module's header should be displayed, when the module is being displayed.
 
@@ -99,9 +96,7 @@ class Module:
         pass
 
     @staticmethod
-    def display() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def display() -> Optional[RenderableType]:
         """
         This method is called when the module must be displayed in its own screen.
 
@@ -112,9 +107,7 @@ class Module:
         pass
 
     @staticmethod
-    def today() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def today() -> Optional[RenderableType]:
         """
         This method is called when the module must be displayed in the Today card.
 
@@ -127,9 +120,7 @@ class Module:
         pass
 
     @staticmethod
-    def card() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def card() -> Optional[RenderableType]:
         """
         This method is called when the module must be displayed as a card on the main page.
 

@@ -10,6 +10,7 @@ from rich.markup import escape
 from rich.padding import Padding
 from rich.panel import Panel
 
+from trash_dash.events import emit, once
 from trash_dash.module import Module, register_module
 from trash_dash.modules import modules
 
@@ -23,16 +24,14 @@ class TodayModule(Module):
             try:
                 if module.meta.allow_today:
                     today = module.today()
-                    try:
-                        destroy_func = today[1]
-                    except IndexError:
-                        destroy_func = None
                     if today:
                         to_return.append(
                             {
                                 "name": module.meta.display_name,
-                                "renderable": today[0],
-                                "destroy_func": destroy_func,
+                                "renderable": today,
+                                "destroy_func": lambda: emit(
+                                    f"{module.meta.name}.destroy"
+                                ),
                             }
                         )
             except AttributeError:
@@ -53,8 +52,9 @@ class TodayModule(Module):
                 if hasattr(item.get("destroy_func"), "__call__"):
                     item.get("destroy_func")()
 
+        once("today.destroy", destroy)
         panel = Panel(RenderGroup(*items), title="Today")
-        return panel, destroy
+        return panel
 
 
 register_module(TodayModule, "today", "Today", "Items important today", False, True)

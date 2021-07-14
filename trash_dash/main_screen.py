@@ -1,18 +1,16 @@
 """Main screen"""
-from collections.abc import Callable
-from typing import Tuple
-
 from rich.align import Align
 from rich.columns import Columns
 from rich.console import RenderGroup
 from rich.padding import Padding
 
 from trash_dash.body import body
+from trash_dash.events import once
 from trash_dash.screen import Screen
 from trash_dash.settings import get_settings
 
 
-def create_screen() -> Tuple[Screen, Callable]:
+def create_screen() -> Screen:
     """Creates and returns a screen"""
     app_settings = get_settings()
     body_renderable, body_destroy = body()
@@ -42,4 +40,6 @@ def create_screen() -> Tuple[Screen, Callable]:
         body_renderable=body_renderable,
     )
 
-    return screen, body_destroy
+    once("main.destroy", body_destroy)
+
+    return screen
