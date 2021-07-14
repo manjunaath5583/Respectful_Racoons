@@ -9,7 +9,7 @@ from rich.live import Live
 from trash_dash.cards import cards as _cards
 from trash_dash.main_screen import create_screen
 from trash_dash.modules import modules
-from trash_dash.screen import screens
+from trash_dash.screen import Screen, screens
 
 term = Terminal()
 
@@ -36,7 +36,7 @@ def _show_more(card_index: int) -> Optional[Tuple[RenderableType, Callable]]:
 
 def run():
     """Run the app"""
-    current_destroy = create_screen()[1]
+    current_screen: Optional[Screen] = create_screen()
 
     try:
         with term.fullscreen(), term.cbreak():
@@ -46,14 +46,13 @@ def run():
                     pressed_key = term.inkey()
                     if pressed_key.is_sequence and pressed_key.code == 361:
                         # Re-render the main screen when <ESC> is pressed
-                        x, y = create_screen()
+                        x = create_screen()
                         live.update(x.layout)
-                        current_destroy()
-                        current_destroy = y
+                        current_screen = x
                     else:
                         # Pass the keypress to the screen
                         screens["main"].keystroke(pressed_key)
-        current_destroy()
+                current_screen.destroy(live)
         print("[b]Exiting!")
     except KeyboardInterrupt:
         pass
