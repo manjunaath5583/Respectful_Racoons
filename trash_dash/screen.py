@@ -2,8 +2,11 @@
 
 from typing import Optional
 
+from blessed.keyboard import Keystroke
 from rich.console import RenderableType
 from rich.layout import Layout
+
+from trash_dash.events import emit
 
 screens = {}
 
@@ -44,3 +47,7 @@ class Screen:
         :param item: The renderable to update the header
         """
         self.header_layout.update(item)
+
+    def keystroke_handler(self, key: Keystroke):
+        """Handles key strokes"""
+        emit(f"{self.name}.keystroke", key)
