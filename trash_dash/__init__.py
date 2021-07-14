@@ -1,10 +1,10 @@
-from collections.abc import Callable
-from typing import Optional, Tuple
+from typing import Optional
 
 from blessed import Terminal, keyboard
 from rich import print
-from rich.console import RenderableType
+from rich.align import Align
 from rich.live import Live
+from rich.markup import escape
 
 from trash_dash.cards import cards as _cards
 from trash_dash.main_screen import create_screen
@@ -14,7 +14,7 @@ from trash_dash.screen import Screen, screens
 term = Terminal()
 
 
-def _show_more(card_index: int) -> Optional[Tuple[RenderableType, Callable]]:
+def _show_more(card_index: int) -> Optional[Screen]:
     try:
         card_item = modules.get(_cards[card_index])
     except IndexError:
@@ -22,14 +22,26 @@ def _show_more(card_index: int) -> Optional[Tuple[RenderableType, Callable]]:
     if not (hasattr(card_item, "display") and bool(card_item.display)):  # type: ignore
         return None
     x = card_item.display()  # type: ignore
+    y = card_item.header()
+    module_screen = Screen(card_item.meta.name)
     try:
-        if not x[0]:
-            return None
-        if len(x) < 2 or not x[1] or not hasattr(x[1], "__call__"):
-            destroy = lambda: None  # noqa: E731
-        else:
-            destroy = x[1]
-        return x[0], destroy
+        if not x:
+            module_screen.render_header(
+                Align(
+                    "[b]This module can't be displayed on its own",
+                    "center",
+                    vertical="middle",
+                )
+            )
+            module_screen.render_body(
+                Align("Press ESC to exit", "center", vertical="middle")
+            )
+            return module_screen
+        module_screen.render_header(
+            y or Align(f"[b]{escape(card_item.meta.display_name)}")
+        )
+        module_screen.render_body(x)
+        return module_screen
     except (IndexError, TypeError):
         return None
 
@@ -52,7 +64,7 @@ def run():
                     else:
                         # Pass the keypress to the screen
                         screens["main"].keystroke(pressed_key)
-                current_screen.destroy(live)
+                current_screen.destroy()
         print("[b]Exiting!")
     except KeyboardInterrupt:
         pass

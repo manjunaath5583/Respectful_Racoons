@@ -9,21 +9,19 @@ from rich.padding import Padding
 
 from trash_dash import cards
 from trash_dash.date_time_section import date_time_section
+from trash_dash.events import emit
 from trash_dash.modules.today import TodayModule
 
 
 def body() -> Tuple[RenderableType, Callable]:
     """Render the body of the main page"""
-    today, today_destroy = TodayModule.card()
-    destroy_func = [today_destroy]
+    today = TodayModule.card()
     one, destroy_one = cards.one()
     two, destroy_two = cards.two()
     three, destroy_three = cards.three()
 
     def destroy():
-        for i in destroy_func:
-            if hasattr(i, "__call__"):
-                i()
+        emit("today.destroy")
         destroy_one()
         destroy_two()
         destroy_three()
