@@ -21,6 +21,8 @@ def _show_more(card_index: int) -> Optional[Screen]:
         card_item = modules.get(_cards[card_index])
     except IndexError:
         return None
+    if not card_item:
+        return None
     if not (hasattr(card_item, "display") and bool(card_item.display)):  # type: ignore
         return None
     x = card_item.display()  # type: ignore
@@ -48,7 +50,7 @@ def _show_more(card_index: int) -> Optional[Screen]:
         return None
 
 
-current_screen: Optional[Screen] = create_screen()
+current_screen: Screen = create_screen()
 
 
 def run():
