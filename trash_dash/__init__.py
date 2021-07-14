@@ -60,7 +60,19 @@ def run():
                         # Re-render the main screen when <ESC> is pressed
                         x = create_screen()
                         live.update(x.layout)
+                        current_screen.destroy()
                         current_screen = x
+                    elif current_screen.name == "main" and pressed_key in [
+                        "1",
+                        "2",
+                        "3",
+                    ]:
+                        card_index = int(pressed_key) - 1
+                        mod = _show_more(card_index)
+                        if mod:
+                            live.update(mod.layout)
+                            current_screen.destroy()
+                            current_screen = mod
                     else:
                         # Pass the keypress to the screen
                         current_screen.keystroke(pressed_key)
