@@ -10,7 +10,7 @@ from rich.markup import escape
 from rich.padding import Padding
 from rich.panel import Panel
 
-from trash_dash.module import Module, register_module
+from trash_dash.module import Module, ModuleReturnType, register_module
 from trash_dash.modules import modules
 
 
@@ -40,7 +40,7 @@ class TodayModule(Module):
         return to_return
 
     @classmethod
-    def card(cls):
+    def card(cls) -> ModuleReturnType:
         """Returns the today card"""
         today = TodayModule._get_today()
         items = []
@@ -54,7 +54,7 @@ class TodayModule(Module):
                     item.get("destroy_func")()
 
         panel = Panel(RenderGroup(*items), title="Today")
-        return panel, destroy
+        return {"renderable": panel, "destroy": destroy, "update": None}
 
 
 register_module(TodayModule, "today", "Today", "Items important today", False, True)
