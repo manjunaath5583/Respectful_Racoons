@@ -49,6 +49,14 @@ class Screen:
         """
         self.header_layout.update(item)
 
+    def render_body(self, item: RenderableType):
+        """
+        Updates the header layout with the ``item`` renderable
+
+        :param item: The renderable to update the header
+        """
+        self.body_layout.update(item)
+
     def keystroke(self, key: Keystroke):
         """Handles key strokes"""
         emit(f"{self.name}.keystroke", key)
