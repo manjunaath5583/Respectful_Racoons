@@ -1,10 +1,16 @@
 """This file contains the API required to create Modules"""
 from collections.abc import Callable
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, TypedDict
 
 from rich.console import RenderableType
 
 from trash_dash.settings import _Settings, register
+
+
+class ModuleReturnType(TypedDict):
+    renderable: RenderableType
+    destroy: Optional[Callable]
+    update: Optional[Callable]
 
 
 def register_module(
@@ -86,9 +92,7 @@ class Module:
     settings: _Settings
 
     @staticmethod
-    def header() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def header() -> ModuleReturnType:
         """
         This method is called when the module's header should be displayed, when the module is being displayed.
 
@@ -99,9 +103,7 @@ class Module:
         pass
 
     @staticmethod
-    def display() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def display() -> ModuleReturnType:
         """
         This method is called when the module must be displayed in its own screen.
 
@@ -112,9 +114,7 @@ class Module:
         pass
 
     @staticmethod
-    def today() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def today() -> ModuleReturnType:
         """
         This method is called when the module must be displayed in the Today card.
 
@@ -127,9 +127,7 @@ class Module:
         pass
 
     @staticmethod
-    def card() -> Optional[
-        Union[Tuple[RenderableType], Tuple[RenderableType, Callable]]
-    ]:
+    def card() -> ModuleReturnType:
         """
         This method is called when the module must be displayed as a card on the main page.
 
