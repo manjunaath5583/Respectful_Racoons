@@ -10,6 +10,16 @@ def on(name: str, handler: Callable):
     _event_handlers[name] = handler
 
 
+def once(name: str, handler: Callable):
+    """Registers an event, and deletes the handler once the event's called"""
+
+    def h(*args, **kwargs):
+        handler(*args, **kwargs)
+        off(name)
+
+    _event_handlers[name] = h
+
+
 def off(name: str):
     """Unregister an event"""
     if _event_handlers.get(name):
