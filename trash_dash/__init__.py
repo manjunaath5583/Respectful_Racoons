@@ -8,6 +8,7 @@ from rich.markup import escape
 
 from trash_dash.all_modules import all_modules
 from trash_dash.cards import cards as _cards
+from trash_dash.events import on
 from trash_dash.main_screen import create_screen
 from trash_dash.modules import modules
 from trash_dash.screen import Screen, screens
@@ -47,14 +48,51 @@ def _show_more(card_index: int) -> Optional[Screen]:
         return None
 
 
+current_screen: Optional[Screen] = create_screen()
+
+
 def run():
     """Run the app"""
-    current_screen: Optional[Screen] = create_screen()
+    global current_screen
 
     try:
         with term.fullscreen(), term.cbreak():
             with Live(screens["main"].layout, screen=True) as live:
                 pressed_key: Optional[keyboard.Keystroke] = None
+
+                def render_module(module_name: str):
+                    global current_screen
+                    module = modules.get(module_name)
+                    if not module:
+                        return
+                    body = module.display()
+                    head = module.header()
+                    module_screen = Screen(module.meta.name, header_renderable=head)
+                    if not body:
+                        module_screen.render_header(
+                            Align(
+                                "[b]This module can't be displayed on its own",
+                                "center",
+                                vertical="middle",
+                            )
+                        )
+                        module_screen.render_body(
+                            Align("Press ESC to exit", "center", vertical="middle")
+                        )
+                        live.update(module_screen.layout)
+                        current_screen.destroy()
+                        current_screen = module_screen
+                        return
+                    module_screen.render_header(
+                        head or Align(f"[b]{escape(module.meta.display_name)}")
+                    )
+                    module_screen.render_body(body)
+                    live.update(module_screen.layout)
+                    current_screen.destroy()
+                    current_screen = module_screen
+
+                on("render_module", render_module)
+
                 while pressed_key != "q":
                     pressed_key = term.inkey()
                     if pressed_key.is_sequence and pressed_key.code == 361:
