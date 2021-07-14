@@ -52,7 +52,7 @@ def run():
                         current_destroy = y
                     else:
                         # Pass the keypress to the screen
-                        screens["main"].keystroke_handler(pressed_key)
+                        screens["main"].keystroke(pressed_key)
         current_destroy()
         print("[b]Exiting!")
     except KeyboardInterrupt:

@@ -48,6 +48,6 @@ class Screen:
         """
         self.header_layout.update(item)
 
-    def keystroke_handler(self, key: Keystroke):
+    def keystroke(self, key: Keystroke):
         """Handles key strokes"""
         emit(f"{self.name}.keystroke", key)
