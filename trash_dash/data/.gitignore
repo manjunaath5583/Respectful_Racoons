@@ -1,2 +1,3 @@
 # Automatically created by mypy
 settings.toml
+*.data.json
