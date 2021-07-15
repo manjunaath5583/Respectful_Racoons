@@ -9,7 +9,7 @@ from rich.markup import escape
 from trash_dash.all_modules import all_modules
 from trash_dash.body import console
 from trash_dash.cards import cards as _cards
-from trash_dash.events import on
+from trash_dash.events import off, on
 from trash_dash.main_screen import create_screen
 from trash_dash.modules import modules
 from trash_dash.screen import Screen, screens
@@ -87,8 +87,10 @@ def run():
                             Align("Press ESC to exit", "center", vertical="middle")
                         )
                         live.update(module_screen.layout)
+                        off(f"{current_screen.name}.update")
                         current_screen.destroy()
                         current_screen = module_screen
+                        on(f"{current_screen.name}.update", live.update)
                         return
                     module_screen.render_header(
                         head or Align(f"[b]{escape(module.meta.display_name)}")
@@ -98,10 +100,12 @@ def run():
                     current_screen.destroy()
                     current_screen = module_screen
 
+                on(f"{current_screen.name}.update", live.update)
                 on("render_module", render_module)
 
                 while pressed_key != "q":
-                    pressed_key = term.inkey()
+                    current_screen.event_loop()
+                    pressed_key = term.inkey(timeout=1)
                     if pressed_key.is_sequence and pressed_key.code == 361:
                         # Re-render the main screen when <ESC> is pressed
                         x = create_screen()
@@ -127,6 +131,7 @@ def run():
                     else:
                         # Pass the keypress to the screen
                         current_screen.keystroke(pressed_key)
+                off(f"{current_screen.name}.update")
                 current_screen.destroy()
         print("[b]Exiting!")
     except KeyboardInterrupt:
