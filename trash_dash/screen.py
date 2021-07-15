@@ -64,6 +64,6 @@ class Screen:
         """Handles destroy"""
         emit(f"{self.name}.destroy")
 
-    def update(self):
-        """Handles update"""
-        emit(f"{self.name}.update")
+    def event_loop(self):
+        """This function should be called when the event loop runs"""
+        emit(f"{self.name}.event_loop")
