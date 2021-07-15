@@ -63,3 +63,7 @@ class Screen:
     def destroy(self):
         """Handles destroy"""
         emit(f"{self.name}.destroy")
+
+    def update(self):
+        """Handles update"""
+        emit(f"{self.name}.update")
