@@ -36,7 +36,3 @@ class Data:
     def module_name(self):
         """The name of the module"""
         return self.__module_name
-
-
-d = Data("test")
-print(d.db)
