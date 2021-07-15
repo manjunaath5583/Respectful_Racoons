@@ -7,6 +7,7 @@ from rich.live import Live
 from rich.markup import escape
 
 from trash_dash.all_modules import all_modules
+from trash_dash.body import console
 from trash_dash.cards import cards as _cards
 from trash_dash.events import on
 from trash_dash.main_screen import create_screen
@@ -57,9 +58,13 @@ def run():
     """Run the app"""
     global current_screen
 
+    if console.height < 25 or console.width <= 100:
+        print("[red b]The console window is too small for the app to run!")
+        return
+
     try:
         with term.fullscreen(), term.cbreak():
-            with Live(screens["main"].layout, screen=True) as live:
+            with Live(screens["main"].layout, console=console, screen=True) as live:
                 pressed_key: Optional[keyboard.Keystroke] = None
 
                 def render_module(module_name: str):
