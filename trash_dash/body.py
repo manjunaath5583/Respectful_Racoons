@@ -15,7 +15,7 @@ from trash_dash.modules.today import TodayModule
 console = Console()
 
 
-def body() -> Tuple[RenderableType, Callable]:
+def body() -> Tuple[RenderableType, Callable, Callable]:
     """Render the body of the main page"""
     today = TodayModule.card()
     one, destroy_one = cards.one()
@@ -27,6 +27,22 @@ def body() -> Tuple[RenderableType, Callable]:
         destroy_one()
         destroy_two()
         destroy_three()
+
+    def update():
+        return RenderGroup(
+            Align("Press [b]a[/b] to view all modules", "center"),
+            Padding(
+                Columns(
+                    [
+                        today,
+                        RenderGroup(date_time_section(), Padding(one, (2, 0))),
+                        RenderGroup(two, Padding(three, (2, 0))),
+                    ],
+                    width=(console.width // 3) - 3,
+                ),
+                (1, 3),
+            ),
+        )
 
     return (
         RenderGroup(
@@ -44,4 +60,5 @@ def body() -> Tuple[RenderableType, Callable]:
             ),
         ),
         destroy,
+        update,
     )
