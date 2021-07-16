@@ -26,7 +26,7 @@ def create_screen() -> Screen:
                             vertical="middle",
                         ),
                         Align(
-                            "[bold]Settings    Exit(q)[/]",
+                            "[bold]Settings(s)    Exit(q)[/]",
                             align="right",
                             vertical="middle",
                         ),

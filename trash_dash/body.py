@@ -31,6 +31,7 @@ def body() -> Tuple[RenderableType, Callable, Callable]:
     def update():
         return RenderGroup(
             Align("Press [b]a[/b] to view all modules", "center"),
+            Align("Press [b]ESC[/b] to return back to the main screen", "center"),
             Padding(
                 Columns(
                     [
