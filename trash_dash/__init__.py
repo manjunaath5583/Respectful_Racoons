@@ -1,3 +1,5 @@
+import os
+import platform
 from typing import Optional
 
 from blessed import Terminal, keyboard
@@ -112,6 +114,22 @@ def run():
                         live.update(x.layout)
                         current_screen.destroy()
                         current_screen = x
+                    elif pressed_key == "s":
+                        start_keyword = "start"
+                        if platform.system().lower() == "linux":
+                            start_keyword = "xdg-open"
+                        elif platform.system().lower() == "darwin":
+                            start_keyword = "open"
+                        os.system(  # noqa: S605
+                            start_keyword
+                            + " "
+                            + os.path.abspath(
+                                os.path.join(
+                                    os.path.dirname(os.path.abspath(__file__)),
+                                    "data/settings.toml",
+                                )
+                            )
+                        )
                     elif current_screen.name == "main" and pressed_key in [
                         "1",
                         "2",
