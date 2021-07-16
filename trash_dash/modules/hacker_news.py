@@ -66,7 +66,7 @@ class HackerNewsModule(Module):
         """Card"""
         news = cls.get_news()
         try:
-            news = news[0:5]
+            news = news[0:3]
         except IndexError:
             return Padding("[b]No news today!", (1, 3))
         news_renders = list(
