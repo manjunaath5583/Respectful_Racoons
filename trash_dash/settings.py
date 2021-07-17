@@ -61,7 +61,7 @@ class _Settings:
             or type(settings.get("module").get(self.name)) != dict  # type: ignore
         ):
             raise Exception("Setting not registered")
-        return settings[self.name].get(key)
+        return settings["module"][self.name].get(key)
 
     def set(self, key: str, value: Any) -> Any:
         """Gets a setting"""
@@ -71,7 +71,7 @@ class _Settings:
             or type(settings.get("module").get(self.name)) != dict  # type: ignore
         ):
             raise Exception("Setting not registered")
-        settings[self.name][key] = value
+        settings["module"][self.name][key] = value
         write_settings(settings)
 
 
