@@ -251,5 +251,17 @@ class TodoModule(Module):
 
         return layout
 
+    @staticmethod
+    def card():
+        todo = Todo()
+        return RenderGroup("[b]Your tasks:", *list(map(lambda x: x["text"], todo.todo)))
 
-register_module(TodoModule, "todo", "To Do", "A Todo List", False, True)
+    @staticmethod
+    def today():
+        todo = Todo()
+        tasks = [*todo.todo, *todo.doing]
+        length = len(tasks)
+        return RenderGroup(f"[b]{length}[/] {'tasks' if length != 1 else 'task'} left!")
+
+
+register_module(TodoModule, "todo", "To Do", "A Todo List", True, True)
