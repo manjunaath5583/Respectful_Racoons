@@ -1,7 +1,7 @@
 """Module that shows wakatime stats"""
 from math import floor
 from time import time
-from typing import List, Optional, TypedDict
+from typing import List, Optional, TypedDict, Union
 
 from requests import get
 from rich.align import Align
@@ -39,7 +39,7 @@ class WakatimeResponseType(TypedDict):
 
 class WakatimeModule(Module):
     @staticmethod
-    def get_wakatime_stats() -> Optional[WakatimeStatsType]:
+    def get_wakatime_stats() -> Optional[Union[dict, WakatimeStatsType]]:
         """Gets the wakatime statistics"""
         settings = register("wakatime")
         data = Data("wakatime")
