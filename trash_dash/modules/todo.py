@@ -92,12 +92,10 @@ class Todo:
     def get_item(self, todo_id: int) -> Optional[Document]:
         return self.data.db.get(doc_id=todo_id)
 
-    def move_item(
-        self, todo_id: int, stage: Literal["todo", "doing", "done"]
-    ) -> Optional[Document]:
+    def move_item(self, todo_id: int, stage: Literal["todo", "doing", "done"]):
         item = self.get_item(todo_id)
         if not item:
-            return
+            return  # type: ignore
         item["stage"] = stage
         self.data.db.update(item, doc_ids=(todo_id,))
 
