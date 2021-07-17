@@ -38,3 +38,9 @@ poetry run python3 main.py
 ```
 
 If you want to contribute modules, be sure to checkout [CREATING_MODULES.md](https://github.com/manjunaath5583/respectful_racoons/blob/main/CREATING_MODULES.md)
+
+## Troubleshooting
+
+If you get any key errors, try deleting any `.data.json` files you see in `trash_dash/data`
+
+If the content gets cropped, try reducing the size of your terminal!
