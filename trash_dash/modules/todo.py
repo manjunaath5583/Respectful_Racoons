@@ -31,7 +31,7 @@ def prompt(layout: Layout, msg: str, evt: str, payload: tuple = tuple()):
     emit("seize_keystrokes", True)
     showing_prompt = True
 
-    def get_prompt(message: str) -> RenderableType:
+    def get_prompt_msg(message: str) -> RenderableType:
         return RenderGroup(
             (keys if len(keys) > 0 else f"[gray]{message}[/gray]"),
             "Press [b]ENTER[/b] to confirm and clear out the text to cancel.",
@@ -60,9 +60,9 @@ def prompt(layout: Layout, msg: str, evt: str, payload: tuple = tuple()):
 
     on("todo.keystroke", lambda x: handler(x, evt, *payload))
     once("todo.remove_prompt", remove_prompt)
-    layout.update(get_prompt(msg))
+    layout.update(get_prompt_msg(msg))
 
-    return lambda: get_prompt(msg)
+    return lambda: get_prompt_msg(msg)
 
 
 class TodoType(TypedDict):
@@ -82,6 +82,12 @@ class Todo:
         todo_id = self.data.db.insert(todo)
         doc = self.data.db.get(doc_id=todo_id)
         return self.parse(doc)
+
+    def delete_item(self, todo_id: int):
+        try:
+            self.data.db.remove(doc_ids=(todo_id,))
+        except KeyError:
+            return
 
     @staticmethod
     def parse(data: Document) -> TodoType:
@@ -178,6 +184,11 @@ class TodoModule(Module):
                 get_prompt = prompt(
                     layout["todo.prompt"], "Type item to add to Done", "add", ("done",)
                 )
+            elif key == "x":
+                off("todo.keystroke")
+                get_prompt = prompt(
+                    layout["todo.prompt"], "Type item number to delete", "delete"
+                )
 
         def add_item(item: str, stage: Literal["todo", "doing", "done"]):
             global get_prompt
@@ -185,8 +196,17 @@ class TodoModule(Module):
             get_prompt = None
             layout_tasks.update(get_todos())
 
+        def delete_item(item: str):
+            global get_prompt
+            if not item.isnumeric():
+                return
+            todo.delete_item(int(item))
+            get_prompt = None
+            layout_tasks.update(get_todos())
+
         on("todo.keystroke", handler)
         on("todo.add", add_item)
+        on("todo.delete", delete_item)
 
         def update():
             if showing_prompt and get_prompt is not None:
