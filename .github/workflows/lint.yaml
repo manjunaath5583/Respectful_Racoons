@@ -83,7 +83,7 @@ jobs:
         run: |
           poetry install
           poetry run pre-commit run --all-files
-          poetry run mypy .
+          poetry run mypy main.py trash_dash
         env:
           # Force pre-commit to do a system install.
           PIP_USER: 0
