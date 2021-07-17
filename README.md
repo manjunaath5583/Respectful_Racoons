@@ -1,3 +1,5 @@
+![Screenshot](ss.png)
+
 # TrashDash
 
 > The trashiest dashboard you'll ever find!
