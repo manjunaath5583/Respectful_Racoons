@@ -22,3 +22,12 @@ def get_weather():  # noqa: D103
         f"https://api.weatherapi.com/v1/current.json?key={os.getenv('WEATHER_APIKEY')}&q={ip}"
     )
     return make_response(jsonify(res.json()), res.status_code)
+
+
+@app.get("/news")
+def get_news():
+    res = get(
+        "https://gnews.io/api/v4/top-headlines?max=10&lang=en&token="
+        + os.getenv("NEWS_APIKEY")
+    )
+    return make_response(jsonify(res.json()), res.status_code)
