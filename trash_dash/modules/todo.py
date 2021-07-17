@@ -89,6 +89,18 @@ class Todo:
         except KeyError:
             return
 
+    def get_item(self, todo_id: int) -> Optional[Document]:
+        return self.data.db.get(doc_id=todo_id)
+
+    def move_item(
+        self, todo_id: int, stage: Literal["todo", "doing", "done"]
+    ) -> Optional[Document]:
+        item = self.get_item(todo_id)
+        if not item:
+            return
+        item["stage"] = stage
+        self.data.db.update(item, doc_ids=(todo_id,))
+
     @staticmethod
     def parse(data: Document) -> TodoType:
         return cast(
@@ -189,6 +201,13 @@ class TodoModule(Module):
                 get_prompt = prompt(
                     layout["todo.prompt"], "Type item number to delete", "delete"
                 )
+            elif key == "m":
+                off("todo.keystroke")
+                get_prompt = prompt(
+                    layout["todo.prompt"],
+                    "Type item number to move, and the location, separated by a space. (e.g. 1 done)",
+                    "move",
+                )
 
         def add_item(item: str, stage: Literal["todo", "doing", "done"]):
             global get_prompt
@@ -204,9 +223,22 @@ class TodoModule(Module):
             get_prompt = None
             layout_tasks.update(get_todos())
 
+        def move_item_1(payload: str):
+            global get_prompt
+            try:
+                item_id, stage = payload.split()
+                if not item_id.isnumeric() or stage not in ["todo", "doing", "done"]:
+                    return
+                todo.move_item(int(item_id), stage)
+                get_prompt = None
+                layout_tasks.update(get_todos())
+            except ValueError:
+                return
+
         on("todo.keystroke", handler)
         on("todo.add", add_item)
         on("todo.delete", delete_item)
+        on("todo.move", move_item_1)
 
         def update():
             if showing_prompt and get_prompt is not None:
