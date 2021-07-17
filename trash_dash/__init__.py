@@ -17,6 +17,7 @@ from trash_dash.modules import modules
 from trash_dash.screen import Screen, screens
 
 term = Terminal()
+handle_keystrokes = True
 
 
 def _show_more(card_index: int) -> Optional[Screen]:
@@ -59,6 +60,7 @@ current_screen: Screen = create_screen()
 def run():
     """Run the app"""
     global current_screen
+    global handle_keystrokes
 
     if console.height < 25 or console.width <= 100:
         print("[red b]The console window is too small for the app to run!")
@@ -102,19 +104,27 @@ def run():
                     current_screen.destroy()
                     current_screen = module_screen
 
+                def seize_keystrokes(b: bool = True):
+                    """Allows modules to completely take over the keyboard (except ESC)"""
+                    global handle_keystrokes
+                    handle_keystrokes = not b
+
                 on(f"{current_screen.name}.update", live.update)
                 on("render_module", render_module)
+                on("seize_keystrokes", seize_keystrokes)
 
-                while pressed_key != "q":
+                while True:
                     current_screen.event_loop()
                     pressed_key = term.inkey(timeout=1)
-                    if pressed_key.is_sequence and pressed_key.code == 361:
+                    if handle_keystrokes and pressed_key == "q":
+                        break
+                    elif pressed_key.is_sequence and pressed_key.code == 361:
                         # Re-render the main screen when <ESC> is pressed
                         x = create_screen()
                         live.update(x.layout)
                         current_screen.destroy()
                         current_screen = x
-                    elif pressed_key == "s":
+                    elif handle_keystrokes and pressed_key == "s":
                         start_keyword = "start"
                         if platform.system().lower() == "linux":
                             start_keyword = "xdg-open"
@@ -130,18 +140,23 @@ def run():
                                 )
                             )
                         )
-                    elif current_screen.name == "main" and pressed_key in [
-                        "1",
-                        "2",
-                        "3",
-                    ]:
+                    elif (
+                        handle_keystrokes
+                        and current_screen.name == "main"
+                        and pressed_key
+                        in [
+                            "1",
+                            "2",
+                            "3",
+                        ]
+                    ):
                         card_index = int(pressed_key) - 1
                         mod = _show_more(card_index)
                         if mod:
                             live.update(mod.layout)
                             current_screen.destroy()
                             current_screen = mod
-                    elif pressed_key == "a":
+                    elif handle_keystrokes and pressed_key == "a":
                         x = all_modules()
                         live.update(x.layout)
                         current_screen.destroy()

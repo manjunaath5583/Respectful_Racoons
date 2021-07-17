@@ -1,9 +1,11 @@
 """Contains a repository of modules"""
 from typing import Any, Dict
 
+from trash_dash.modules.covid import CovidModule
 from trash_dash.modules.example import MyModule
 from trash_dash.modules.hacker_news import HackerNewsModule
 from trash_dash.modules.news import NewsModule
+from trash_dash.modules.todo import TodoModule
 from trash_dash.modules.wakatime import WakatimeModule
 from trash_dash.modules.weather import WeatherModule
 
@@ -14,4 +16,6 @@ modules: Dict[str, Any] = {
     WeatherModule.meta.name: WeatherModule,
     NewsModule.meta.name: NewsModule,
     WakatimeModule.meta.name: WakatimeModule,
+    TodoModule.meta.name: TodoModule,
+    CovidModule.meta.name: CovidModule,
 }

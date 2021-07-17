@@ -4,15 +4,14 @@ from typing import Tuple
 
 from rich.align import Align
 from rich.columns import Columns
-from rich.console import Console, RenderableType, RenderGroup
+from rich.console import RenderableType, RenderGroup
 from rich.padding import Padding
 
 from trash_dash import cards
+from trash_dash.console import console
 from trash_dash.date_time_section import date_time_section
 from trash_dash.events import emit
 from trash_dash.modules.today import TodayModule
-
-console = Console()
 
 
 def body() -> Tuple[RenderableType, Callable, Callable]:
