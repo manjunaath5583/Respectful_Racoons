@@ -6,6 +6,8 @@
 
 TrashDash is a command line dashboard that organizes all of your data into one place. Just open it up to see everything in a neat view.
 
+See the full documentation [here](https://respectful-racoons.surge.sh)
+
 ## Installation instructions
 
 > **Python 3.9** is required. Any OS will do
