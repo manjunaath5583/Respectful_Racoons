@@ -1,4 +1,9 @@
-![Screenshot](ss.png)
+---
+title: Welcome to TrashDash's documentation
+layout: ../layouts/Main.astro
+---
+
+<img src="/ss.png" alt="Screenshot of TrashDash" style="width: 100%; border: 1px black solid; border-radius: 0.5rem" />
 
 # TrashDash
 
@@ -6,22 +11,22 @@
 
 TrashDash is a command line dashboard that organizes all of your data into one place. Just open it up to see everything in a neat view.
 
-See the full documentation [here](https://respectful-racoons.surge.sh)
+# Installation instructions
 
-## Installation instructions
-
-> **Python 3.9** is required. Any OS will do
+Python 3.9 is required. Any OS will do
 
 TrashDash is pretty easy to install.
 
 First, clone this repository:
-```bash
+
+```shell
 git clone https://github.com/manjunaath5583/respectful_racoons.git trashdash
 
 cd trashdash
 ```
 
 Next, install all dependencies:
+
 ```bash
 # Feel free to create a Virtual Environment, if you don't like clutter
 pip install -r requirements.txt
@@ -31,6 +36,7 @@ poetry install
 ```
 
 Finally, run the application
+
 ```bash
 # Don't forget to activate the Virtual Environment (if you created one)
 python3 main.py
@@ -39,10 +45,10 @@ python3 main.py
 poetry run python3 main.py
 ```
 
-If you want to contribute modules, be sure to checkout [CREATING_MODULES.md](https://github.com/manjunaath5583/respectful_racoons/blob/main/CREATING_MODULES.md)
+On first start, TrashDash may take a bit of while (5-20 seconds) to start. This is because TrashDash is fetching APIs and caching them. This only happens once a day, so you should only have to wait once in a while.
 
-## Troubleshooting
+# Troubleshooting
 
-If you get any key errors, try deleting any `.data.json` files you see in `trash_dash/data`
+If you get any errors, try deleting any `.data.json` files you find in the `trash_dash/data` folder.
 
-If the content gets cropped, try reducing the size of your terminal!
+If the content gets cropped, try reducing the size of the terminal!
