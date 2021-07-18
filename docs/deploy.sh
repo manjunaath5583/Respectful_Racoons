@@ -1,2 +1,5 @@
+# Build with astro
+npx astro build
+
 # deploy with surge
-surge respectful-racoons.surge.sh
+surge dist respectful-racoons.surge.sh
